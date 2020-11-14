@@ -5,5 +5,5 @@ socat $SOCAT_ARGS \
     UNIX-CONNECT:$XDG_RUNTIME_DIR/discord-ipc-0 \
     &
 socat_pid=$!
-env TMPDIR=$XDG_CACHE_HOME ZYPAK_FORCE_FILE_PORTAL=1 zypak-wrapper.sh /app/discord-canary/DiscordCanary "$@"
+env TMPDIR=$XDG_CACHE_HOME CHROME_WRAPPER=$(readlink -f "$0") ZYPAK_FORCE_FILE_PORTAL=1 zypak-wrapper.sh /app/discord-canary/DiscordCanary "$@"
 kill -SIGTERM $socat_pid
