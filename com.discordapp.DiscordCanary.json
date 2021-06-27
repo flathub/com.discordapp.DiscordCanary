@@ -23,6 +23,7 @@
         "--env=XDG_CURRENT_DESKTOP=Unity",
         "--talk-name=org.freedesktop.portal.Fcitx",
         "--talk-name=org.kde.StatusNotifierWatcher",
+        "--filesystem=xdg-run/pipewire-0",
         "--talk-name=com.canonical.AppMenu.Registrar"
     ],
     "modules": [
@@ -36,6 +37,7 @@
                 "install -d /app/share/applications",
                 "sed -e 's/Icon=discord-canary/Icon=com.discordapp.DiscordCanary/' -e 's|Exec=/usr/share/discord-canary/DiscordCanary|Exec=discord-canary|' /app/discord-canary/discord-canary.desktop > /app/share/applications/${FLATPAK_ID}.desktop",
                 "install -Dm644 /app/discord-canary/discord.png /app/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png",
+                "desktop-file-edit --set-key=\"Exec\" --set-value=\"discord-canary --enable-features=WebRTCPipeWireCapturer %U\" ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop",
                 "install -Dm644 com.discordapp.DiscordCanary.metainfo.xml /app/share/metainfo/com.discordapp.DiscordCanary.metainfo.xml"
             ],
             "sources": [
