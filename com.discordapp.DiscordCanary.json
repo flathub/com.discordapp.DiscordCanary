@@ -116,8 +116,8 @@
                     "sources": [
                         {
                             "type": "archive",
-                            "url": "http://www.dest-unreach.org/socat/download/socat-1.7.4.2.tar.gz",
-                            "sha256": "a38f507dea8aaa8f260f54ebc1de1a71e5adca416219f603cda3e3002960173c",
+                            "url": "http://www.dest-unreach.org/socat/download/socat-1.7.4.3.tar.gz",
+                            "sha256": "d697245144731423ddbbceacabbd29447089ea223e9a439b28f9ff90d0dd216e",
                             "x-checker-data": {
                                 "type": "anitya",
                                 "project-id": 4848,
