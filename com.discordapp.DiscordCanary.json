@@ -101,8 +101,8 @@
                     "sources": [
                         {
                             "type": "archive",
-                            "url": "https://github.com/pciutils/pciutils/archive/v3.8.0.tar.gz",
-                            "sha256": "71189a1297e39d2638dd5691a102d2aecd7db8083e6de376c115e8996eeda027",
+                            "url": "https://github.com/pciutils/pciutils/archive/v3.9.0.tar.gz",
+                            "sha256": "17829b1fc3ef2a022f2b0a6c4d7a686b53a2fb0233951c31f9344e0abc4034bf",
                             "x-checker-data": {
                                 "type": "anitya",
                                 "project-id": 2605,
