@@ -13,7 +13,7 @@ then
     FEATURES="$FEATURES,WaylandWindowDecorations"
 fi
 
-FLAGS="--ozone-platform-hint=auto \
+FLAGS="--ozone-platform=$XDG_SESSION_TYPE \
 --enable-gpu-rasterization \
 --enable-zero-copy \
 --enable-gpu-compositing \
