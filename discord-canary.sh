@@ -6,7 +6,7 @@ socat $SOCAT_ARGS \
     &
 socat_pid=$!
 
-FEATURES="UseSkiaRenderer,CanvasOopRasterization"
+FEATURES="UseSkiaRenderer"
 
 if [[ $XDG_SESSION_TYPE == "wayland" ]]
 then
@@ -14,11 +14,6 @@ then
 fi
 
 FLAGS="--ozone-platform=$XDG_SESSION_TYPE \
---enable-gpu-rasterization \
---enable-zero-copy \
---enable-gpu-compositing \
---enable-native-gpu-memory-buffers \
---enable-oop-rasterization \
 --enable-features=$FEATURES"
 
 if [[ $XDG_SESSION_TYPE == "wayland" ]] && [ -c /dev/nvidia0 ]
