@@ -6,11 +6,9 @@ socat $SOCAT_ARGS \
     &
 socat_pid=$!
 
-FEATURES="UseSkiaRenderer"
-
 if [[ $XDG_SESSION_TYPE == "wayland" ]]
 then
-    FEATURES="$FEATURES,WaylandWindowDecorations"
+    FEATURES="WaylandWindowDecorations"
 fi
 
 FLAGS="--ozone-platform=$XDG_SESSION_TYPE \
