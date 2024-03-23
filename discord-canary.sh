@@ -7,12 +7,13 @@ socat $SOCAT_ARGS \
 socat_pid=$!
 
 WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
+FLAGS=("${DISCORD_FLAGS[@]}")
 
 if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" ]]
 then
-    FLAGS="--enable-features=WaylandWindowDecorations --ozone-platform-hint=auto"
+    FLAGS+=("--enable-features=WaylandWindowDecorations" "--ozone-platform-hint=auto")
 fi
 
 disable-breaking-updates.py
-env TMPDIR=$XDG_CACHE_HOME zypak-wrapper /app/discord-canary/DiscordCanary $FLAGS "$@"
+env TMPDIR=$XDG_CACHE_HOME zypak-wrapper /app/discord-canary/DiscordCanary "${FLAGS[@]}" "$@"
 kill -SIGTERM $socat_pid
