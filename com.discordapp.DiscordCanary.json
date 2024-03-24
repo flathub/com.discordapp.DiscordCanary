@@ -60,9 +60,10 @@
                 "mv DiscordCanary /app/discord-canary",
                 "chmod +x /app/discord-canary/DiscordCanary",
                 "install -d /app/share/applications",
-                "sed -e 's/Icon=discord-canary/Icon=com.discordapp.DiscordCanary/' -e 's|Exec=/usr/share/discord-canary/DiscordCanary|Exec=com.discordapp.DiscordCanary|' /app/discord-canary/discord-canary.desktop > /app/share/applications/${FLATPAK_ID}.desktop",
+                "install -Dm755 /app/discord-canary/discord-canary.desktop /app/share/applications/${FLATPAK_ID}.desktop",
                 "install -Dm644 /app/discord-canary/discord.png /app/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png",
-                "install -Dm644 com.discordapp.DiscordCanary.appdata.xml /app/share/appdata/com.discordapp.DiscordCanary.appdata.xml",
+                "install -Dm644 com.discordapp.DiscordCanary.metainfo.xml /app/share/appdata/com.discordapp.DiscordCanary.metainfo.xml",
+                "desktop-file-edit --set-icon=com.discordapp.DiscordCanary --set-key=Exec --set-value=com.discordapp.DiscordCanary /app/share/applications/${FLATPAK_ID}.desktop",
                 "patch-desktop-filename ${FLATPAK_DEST}/discord-canary/resources/app.asar"
             ],
             "sources": [
@@ -83,7 +84,7 @@
                 },
                 {
                     "type": "file",
-                    "path": "com.discordapp.DiscordCanary.appdata.xml"
+                    "path": "com.discordapp.DiscordCanary.metainfo.xml"
                 },
                 {
                     "type": "file",
