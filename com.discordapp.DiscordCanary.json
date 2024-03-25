@@ -22,7 +22,6 @@
         "--talk-name=com.canonical.AppMenu.Registrar",
         "--talk-name=com.canonical.indicator.application",
         "--talk-name=com.canonical.Unity",
-        "--own-name=org.kde.*",
         "--env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons",
         "--env=XDG_CURRENT_SESSION=KDE",
         "--env=ELECTRON_TRASH=gio"
