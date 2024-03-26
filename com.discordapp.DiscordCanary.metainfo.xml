@@ -53,6 +53,7 @@
     <category>Network</category>
   </categories>
   <releases>
+    <release version="0.0.325" date="2024-03-26"/>
     <release version="0.0.324" date="2024-03-24"/>
     <release version="0.0.323" date="2024-03-22"/>
     <release version="0.0.318" date="2024-03-21"/>
