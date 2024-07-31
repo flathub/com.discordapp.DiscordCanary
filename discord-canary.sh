@@ -7,7 +7,7 @@ socat $SOCAT_ARGS \
 socat_pid=$!
 
 WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
-FLAGS=("${DISCORD_FLAGS[@]}")
+FLAGS=("${DISCORD_FLAGS[@]}" "--enable-speech-dispatcher")
 
 if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
 then

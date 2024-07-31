@@ -16,6 +16,7 @@
         "--socket=pulseaudio",
         "--share=network",
         "--device=all",
+        "--filesystem=xdg-run/speech-dispatcher",
         "--talk-name=org.freedesktop.ScreenSaver",
         "--talk-name=org.kde.StatusNotifierWatcher",
         "--talk-name=com.canonical.AppMenu.Registrar",
