@@ -5,7 +5,7 @@ DISCORD_SOCKET="${XDG_RUNTIME_DIR}/discord-ipc-0"
 rm -f "${OUR_SOCKET}"
 socat ${SOCAT_ARGS} \
     "UNIX-LISTEN:${OUR_SOCKET},forever,fork" \
-    "UNIX-CONNECT:${DISCORD_SOCKET}/discord-ipc-0" \
+    "UNIX-CONNECT:${DISCORD_SOCKET}" \
     &
 socat_pid=$!
 
