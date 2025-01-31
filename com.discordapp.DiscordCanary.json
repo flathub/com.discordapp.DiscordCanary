@@ -1,9 +1,9 @@
 {
     "app-id": "com.discordapp.DiscordCanary",
     "base": "org.electronjs.Electron2.BaseApp",
-    "base-version": "23.08",
+    "base-version": "24.08",
     "runtime": "org.freedesktop.Platform",
-    "runtime-version": "23.08",
+    "runtime-version": "24.08",
     "sdk": "org.freedesktop.Sdk",
     "command": "com.discordapp.DiscordCanary",
     "separate-locales": false,
@@ -23,29 +23,38 @@
         "--talk-name=com.canonical.indicator.application",
         "--talk-name=com.canonical.Unity",
         "--env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons",
-        "--env=XDG_CURRENT_SESSION=KDE",
         "--env=ELECTRON_TRASH=gio"
     ],
     "modules": [
         {
-            "name": "twemoji-fonts",
-            "buildsystem": "simple",
+            "name": "socat",
+            "config-opts": [
+                "--disable-largefile", "--disable-stats", "--disable-stdio", "--disable-fdnum",
+                "--disable-creat", "--disable-gopen", "--disable-pipe", "--disable-socketpair", "--disable-termios",
+                "--disable-abstract-unixsocket", "--disable-ip6", "--disable-rawip", "--disable-genericsocket",
+                "--disable-interface", "--disable-tcp", "--disable-udp", "--disable-udplite", "--disable-sctp",
+                "--disable-dccp", "--disable-vsock", "--disable-namespaces", "--disable-posixmq", "--disable-socks4",
+                "--disable-socks4a", "--disable-socks5", "--disable-proxy", "--disable-exec", "--disable-system",
+                "--disable-shell", "--disable-pty", "--disable-fs", "--disable-readline", "--disable-openssl",
+                "--disable-tun", "--disable-sycls", "--disable-filan", "--disable-libwrap", "--disable-resolve"
+            ],
             "sources": [
                 {
-                    "type": "file",
-                    "path": "emoji-font.conf"
-                },
-                {
-                    "type": "file",
-                    "path": "Twemoji.ttf"
+                    "type": "archive",
+                    "url": "http://www.dest-unreach.org/socat/download/socat-1.8.0.2.tar.gz",
+                    "sha256": "e9498367cb765d44bb06be9709c950f436b30bf7071a224a0fee2522f9cbb417",
+                    "x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 4848,
+                        "url-template": "http://www.dest-unreach.org/socat/download/socat-$version.tar.gz"
+                    }
                 }
             ],
-            "build-commands": [
-                "mkdir -p /app/share/fonts/",
-                "cp Twemoji.ttf /app/share/fonts/",
-                "mkdir -p /app/etc/fonts/",
-                "cp emoji-font.conf /app/etc/fonts/local.conf",
-                "fc-cache -fv"
+            "cleanup": [
+                "/bin/*.sh",
+                "/bin/filan",
+                "/bin/procan",
+                "/share"
             ]
         },
         {
@@ -60,7 +69,7 @@
                 "install -Dm755 /app/discord-canary/discord-canary.desktop /app/share/applications/${FLATPAK_ID}.desktop",
                 "install -Dm644 /app/discord-canary/discord.png /app/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png",
                 "install -Dm644 com.discordapp.DiscordCanary.metainfo.xml /app/share/appdata/com.discordapp.DiscordCanary.metainfo.xml",
-                "desktop-file-edit --set-icon=com.discordapp.DiscordCanary --set-key=Exec --set-value=com.discordapp.DiscordCanary --add-mime-type=x-scheme-handler/discord /app/share/applications/${FLATPAK_ID}.desktop",
+                "desktop-file-edit --set-icon=com.discordapp.DiscordCanary --set-key=Exec --set-value='com.discordapp.DiscordCanary %U' --add-mime-type=x-scheme-handler/discord /app/share/applications/${FLATPAK_ID}.desktop",
                 "patch-desktop-filename ${FLATPAK_DEST}/discord-canary/resources/app.asar"
             ],
             "sources": [
@@ -70,9 +79,12 @@
                     "sha256": "17ef29e7fd5d34130672e59ca152aa137963b2c5292c4bff5c99dc8724a65801",
                     "strip-components": 0,
                     "x-checker-data": {
-                        "type": "rotating-url",
-                        "url": "https://discordapp.com/api/download/canary?platform=linux&format=tar.gz",
-                        "pattern": "https://dl-canary.discordapp.net/apps/linux/([0-9.]+)/discord-canary-.*.tar.gz"
+                        "type": "json",
+                        "url": "https://discord.com/api/updates/canary?platform=linux",
+                        "version-query": ".name",
+                        "timestamp-query": ".pub_date",
+                        "url-query": "\"https://dl-canary.discordapp.net/apps/linux/\\($version)/discord-canary-\\($version).tar.gz\"",
+                        "is-main-source": true
                     }
                 },
                 {
@@ -86,48 +98,6 @@
                 {
                     "type": "file",
                     "path": "disable-breaking-updates.py"
-                }
-            ],
-            "modules": [
-                {
-                    "name": "pciutils",
-                    "disabled": true,
-                    "no-autogen": true,
-                    "make-args": [
-                        "SHARED=yes",
-                        "PREFIX=/app"
-                    ],
-                    "make-install-args": [
-                        "SHARED=yes",
-                        "PREFIX=/app"
-                    ],
-                    "sources": [
-                        {
-                            "type": "archive",
-                            "url": "https://github.com/pciutils/pciutils/archive/v3.13.0.tar.gz",
-                            "sha256": "861fc26151a4596f5c3cb6f97d6c75c675051fa014959e26fb871c8c932ebc67",
-                            "x-checker-data": {
-                                "type": "anitya",
-                                "project-id": 2605,
-                                "url-template": "https://github.com/pciutils/pciutils/archive/v$version.tar.gz"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "socat",
-                    "sources": [
-                        {
-                            "type": "archive",
-                            "url": "http://www.dest-unreach.org/socat/download/socat-1.8.0.2.tar.gz",
-                            "sha256": "e9498367cb765d44bb06be9709c950f436b30bf7071a224a0fee2522f9cbb417",
-                            "x-checker-data": {
-                                "type": "anitya",
-                                "project-id": 4848,
-                                "url-template": "http://www.dest-unreach.org/socat/download/socat-$version.tar.gz"
-                            }
-                        }
-                    ]
                 }
             ]
         }
