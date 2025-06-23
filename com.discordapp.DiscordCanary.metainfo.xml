@@ -74,8 +74,11 @@
   </supports>
   <update_contact>me_at_modder.pw</update_contact>
   <releases>
-    <release version="0.0.702" date="2025-06-18">
+    <release version="0.0.703" date="2025-06-23">
       <description></description>
+    </release>
+    <release version="0.0.702" date="2025-06-18">
+      <description/>
     </release>
     <release version="0.0.701" date="2025-06-17">
       <description/>
