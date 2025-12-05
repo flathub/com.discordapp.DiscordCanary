@@ -1,9 +1,9 @@
 {
     "app-id": "com.discordapp.DiscordCanary",
     "base": "org.electronjs.Electron2.BaseApp",
-    "base-version": "24.08",
+    "base-version": "25.08",
     "runtime": "org.freedesktop.Platform",
-    "runtime-version": "24.08",
+    "runtime-version": "25.08",
     "sdk": "org.freedesktop.Sdk",
     "command": "com.discordapp.DiscordCanary",
     "separate-locales": false,
@@ -12,6 +12,7 @@
     ],
     "finish-args": [
         "--share=ipc",
+        "--socket=wayland",
         "--socket=x11",
         "--socket=pulseaudio",
         "--share=network",
@@ -100,7 +101,10 @@
                 "install -Dm755 /app/discord-canary/discord-canary.desktop /app/share/applications/${FLATPAK_ID}.desktop",
                 "install -Dm644 /app/discord-canary/discord.png /app/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png",
                 "install -Dm644 com.discordapp.DiscordCanary.metainfo.xml /app/share/appdata/com.discordapp.DiscordCanary.metainfo.xml",
-                "desktop-file-edit --set-icon=com.discordapp.DiscordCanary --set-key=Exec --set-value='com.discordapp.DiscordCanary %U' --add-mime-type=x-scheme-handler/discord /app/share/applications/${FLATPAK_ID}.desktop",
+                "desktop-file-edit --set-icon=com.discordapp.DiscordCanary /app/share/applications/${FLATPAK_ID}.desktop",
+                "desktop-file-edit --set-key=Exec --set-value='com.discordapp.DiscordCanary %U' /app/share/applications/${FLATPAK_ID}.desktop",
+                "desktop-file-edit --add-mime-type=x-scheme-handler/discord /app/share/applications/${FLATPAK_ID}.desktop",
+                "desktop-file-edit --remove-key=Path /app/share/applications/${FLATPAK_ID}.desktop",
                 "patch-desktop-filename ${FLATPAK_DEST}/discord-canary/resources/app.asar"
             ],
             "sources": [

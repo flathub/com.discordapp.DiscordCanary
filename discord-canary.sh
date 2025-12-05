@@ -26,16 +26,13 @@ then
     socat_pid=$!
 fi
 
-WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
-FLAGS=("${DISCORD_FLAGS[@]}" "--enable-speech-dispatcher")
-
-if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
+if [ -f "${XDG_CONFIG_HOME}/discord-flags.conf" ]
 then
-    FLAGS+=("--enable-features=WaylandWindowDecorations" "--ozone-platform-hint=auto")
+    mapfile -t FLAGS <<< "$(grep -Ev '^\s*$|^#' "${XDG_CONFIG_HOME}/discord-flags.conf")"
 fi
 
 disable-breaking-updates.py
-env TMPDIR="${XDG_CACHE_HOME}" zypak-wrapper /app/discord-canary/DiscordCanary "${FLAGS[@]}" "$@"
+env TMPDIR="${XDG_CACHE_HOME}" zypak-wrapper /app/discord-canary/DiscordCanary --enable-speech-dispatcher "${DISCORD_FLAGS[@]}" "${FLAGS[@]}" "$@"
 
 if [ "${invoke_socat}" = true ]
 then
