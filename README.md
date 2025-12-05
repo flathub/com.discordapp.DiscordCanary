@@ -17,19 +17,13 @@ flatpak run com.discordapp.DiscordCanary
 * Rich Presence socket is not exposed for other applications by default.  
   Please consult [Discord (Stable) wiki page](https://github.com/flathub/com.discordapp.Discord/wiki/Rich-Precense-(discord-rpc)) if you want to expose Discord's rich presence interface for other applications.
 
-## Opt-in features
-
-### Wayland support
-
-This package enables the flags to run on Wayland, however it is opt-in. To opt-in run:
-
+## Wayland
+Wayland support is enabled by default now. To opt-out run:
 ```sh
-flatpak override --user --socket=wayland com.discordapp.DiscordCanary
+flatpak override --user --nosocket=wayland com.discordapp.DiscordCanary
 ```
 
-To opt-out do the same with `--nosocket=wayland`.
-
-
+## Opt-in features
 ### Startup flags customization
 
 You can change `DISCORD_FLAGS` env variable to add any required flags:
