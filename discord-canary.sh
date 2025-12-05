@@ -26,8 +26,13 @@ then
     socat_pid=$!
 fi
 
+if [ -f "${XDG_CONFIG_HOME}/discord-flags.conf" ]
+then
+    mapfile -t FLAGS <<< "$(grep -Ev '^\s*$|^#' "${XDG_CONFIG_HOME}/discord-flags.conf")"
+fi
+
 disable-breaking-updates.py
-env TMPDIR="${XDG_CACHE_HOME}" zypak-wrapper /app/discord-canary/DiscordCanary --enable-speech-dispatcher "${DISCORD_FLAGS[@]}" "$@"
+env TMPDIR="${XDG_CACHE_HOME}" zypak-wrapper /app/discord-canary/DiscordCanary --enable-speech-dispatcher "${DISCORD_FLAGS[@]}" "${FLAGS[@]}" "$@"
 
 if [ "${invoke_socat}" = true ]
 then
