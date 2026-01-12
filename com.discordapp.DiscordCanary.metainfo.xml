@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
+<component type="desktop-application">
   <id>com.discordapp.DiscordCanary</id>
   <launchable type="desktop-id">com.discordapp.DiscordCanary.desktop</launchable>
   <name>Discord Canary</name>
@@ -15,6 +15,7 @@
   <url type="contact">https://discord.com/company-information</url>
   <icon type="remote" height="256" width="256">https://github.com/flathub/com.discordapp.DiscordCanary/raw/master/com.discordapp.DiscordCanary.png</icon>
   <description>
+    <p>**NOTE: This wrapper is not verified by, affiliated with, or supported by Discord.**</p>
     <p>Discord is a free all in one messaging, voice, and video client thats available on your computer and phone.</p>
     <p>Whether you’re part of a school club, gaming group, worldwide art community, or just a handful of friends that want to spend time together, Discord makes it easy to talk every day and hang out more often.</p>
     <ul>
@@ -25,7 +26,6 @@
       <li>Low-latency voice and video feels like you’re in the same room. Wave hello over video, watch friends stream their games, or gather up and have a drawing session with screen share.</li>
       <li>Available on Linux, macOS, Windows, iOS, Android, and your web browser.</li>
     </ul>
-    <p>NOTE: This wrapper is not verified by, affiliated with, or supported by Discord.</p>
   </description>
   <screenshots>
     <screenshot type="default">
