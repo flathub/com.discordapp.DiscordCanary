@@ -110,8 +110,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://dl-canary.discordapp.net/apps/linux/0.0.911/discord-canary-0.0.911.tar.gz",
-                    "sha256": "d0d089712fa487b878be31e469365d2b85645d8addfe54bda9cdf3a830fe5f6b",
+                    "url": "https://dl-canary.discordapp.net/apps/linux/0.0.913/discord-canary-0.0.913.tar.gz",
+                    "sha256": "128785746d47c9db8dc083c7c89e3fdfdfbb8fda35466c385f10d82fd6833bfa",
                     "strip-components": 0,
                     "x-checker-data": {
                         "type": "json",
