@@ -105,7 +105,7 @@
                 "desktop-file-edit --set-key=Exec --set-value='com.discordapp.DiscordCanary %U' /app/share/applications/${FLATPAK_ID}.desktop",
                 "desktop-file-edit --add-mime-type=x-scheme-handler/discord /app/share/applications/${FLATPAK_ID}.desktop",
                 "desktop-file-edit --remove-key=Path /app/share/applications/${FLATPAK_ID}.desktop",
-                "patch-desktop-filename ${FLATPAK_DEST}/discord-canary/resources/app.asar"
+                "patch-electron-desktop-filename ${FLATPAK_DEST}/discord-canary/resources/app.asar"
             ],
             "sources": [
                 {
