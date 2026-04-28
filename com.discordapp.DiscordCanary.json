@@ -96,7 +96,7 @@
                 "install -Dm755 discord-canary.sh /app/bin/com.discordapp.DiscordCanary",
                 "install -Dm755 disable-breaking-updates.py /app/bin",
                 "mv DiscordCanary /app/discord-canary",
-                "chmod +x /app/discord-canary/DiscordCanary",
+                "chmod +x /app/discord-canary/discord-canary",
                 "install -d /app/share/applications",
                 "install -Dm755 /app/discord-canary/discord-canary.desktop /app/share/applications/${FLATPAK_ID}.desktop",
                 "install -Dm644 /app/discord-canary/discord.png /app/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png",
@@ -104,8 +104,7 @@
                 "desktop-file-edit --set-icon=com.discordapp.DiscordCanary /app/share/applications/${FLATPAK_ID}.desktop",
                 "desktop-file-edit --set-key=Exec --set-value='com.discordapp.DiscordCanary %U' /app/share/applications/${FLATPAK_ID}.desktop",
                 "desktop-file-edit --add-mime-type=x-scheme-handler/discord /app/share/applications/${FLATPAK_ID}.desktop",
-                "desktop-file-edit --remove-key=Path /app/share/applications/${FLATPAK_ID}.desktop",
-                "patch-electron-desktop-filename ${FLATPAK_DEST}/discord-canary/resources/app.asar"
+                "desktop-file-edit --remove-key=Path /app/share/applications/${FLATPAK_ID}.desktop"
             ],
             "sources": [
                 {
