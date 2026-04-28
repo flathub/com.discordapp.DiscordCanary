@@ -32,7 +32,7 @@ then
 fi
 
 disable-breaking-updates.py
-env TMPDIR="${XDG_CACHE_HOME}" zypak-wrapper /app/discord-canary/discord-canary --enable-speech-dispatcher "${DISCORD_FLAGS[@]}" "${FLAGS[@]}" "$@"
+env TMPDIR="${XDG_CACHE_HOME}" /app/discord-canary/discord-canary --no-sandbox --enable-speech-dispatcher "${DISCORD_FLAGS[@]}" "${FLAGS[@]}" "$@"
 
 if [ "${invoke_socat}" = true ]
 then
