@@ -1,0 +1,237 @@
+id: com.discordapp.DiscordCanary
+base: org.electronjs.Electron2.BaseApp
+base-version: '25.08'
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: com.discordapp.DiscordCanary
+separate-locales: false
+tags:
+  - proprietary
+
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=x11
+  - --socket=pcsc
+  - --socket=pulseaudio
+  - --share=network
+  - --device=all
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --filesystem=xdg-run/pipewire-0
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=com.canonical.AppMenu.Registrar
+  - --talk-name=com.canonical.indicator.application
+  - --talk-name=com.canonical.Unity
+  - --system-talk-name=org.freedesktop.UPower
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
+  - --env=ELECTRON_TRASH=gio
+
+modules:
+  - name: socat
+    config-opts:
+      - --disable-largefile
+      - --disable-stats
+      - --disable-stdio
+      - --disable-fdnum
+      - --disable-creat
+      - --disable-gopen
+      - --disable-pipe
+      - --disable-socketpair
+      - --disable-termios
+      - --disable-abstract-unixsocket
+      - --disable-ip6
+      - --disable-rawip
+      - --disable-genericsocket
+      - --disable-interface
+      - --disable-tcp
+      - --disable-udp
+      - --disable-udplite
+      - --disable-sctp
+      - --disable-dccp
+      - --disable-vsock
+      - --disable-namespaces
+      - --disable-posixmq
+      - --disable-socks4
+      - --disable-socks4a
+      - --disable-socks5
+      - --disable-proxy
+      - --disable-exec
+      - --disable-system
+      - --disable-shell
+      - --disable-pty
+      - --disable-fs
+      - --disable-readline
+      - --disable-openssl
+      - --disable-tun
+      - --disable-sycls
+      - --disable-filan
+      - --disable-libwrap
+      - --disable-resolve
+    sources:
+      - type: archive
+        url: http://www.dest-unreach.org/socat/download/socat-1.8.1.1.tar.gz
+        sha256: f68b602c80e94b4b7498d74ec408785536fe33534b39467977a82ab2f7f01ddb
+        x-checker-data:
+          type: anitya
+          project-id: 4848
+          url-template: http://www.dest-unreach.org/socat/download/socat-$version.tar.gz
+    cleanup:
+      - /bin/*.sh
+      - /bin/filan
+      - /bin/procan
+      - /share/man
+
+  - name: discord
+    buildsystem: simple
+    build-options:
+      # Some Discord binary modules ship with debug symbols, make sure not to touch them.
+      no-debuginfo: true
+      strip: false
+    build-commands:
+      - mkdir -p /app/discord-canary/modules
+      # Extract the main Discord application
+      - brotli -cd discord_full.tar.br | tar xf - -C /app/discord-canary --strip-components 1
+      # Extract Discord modules
+      - |
+        set -euo pipefail
+        for module in *_module.tar.br; do
+          target_dir=/app/discord-canary/modules/${module%_*}
+          mkdir -p $target_dir
+          brotli -cdv -- $module | tar -xf - -C $target_dir --strip-components 1
+        done
+      - install -Dm755 discord-canary.sh /app/bin/com.discordapp.DiscordCanary
+      - install -Dm755 disable-breaking-updates.py /app/bin
+      - install -Dm644 DiscordCanary/discord-canary.desktop /app/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm644 com.discordapp.DiscordCanary.svg /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg
+      - install -Dm644 com.discordapp.DiscordCanary.metainfo.xml /app/share/appdata/${FLATPAK_ID}.metainfo.xml
+    post-install:
+      # HACK: Krisp fails to initialize if this directory is not present (or if can't be created). Logs:
+      #       MediaEngineStore] Failed to load Krisp module: Failed to setup Krisp module, error code: -4
+      #       [AVError] AV error reported: noise-canceller-error {"underlyingError":"NoiseCancellerError.KRISP_INIT_ERROR_GLOBAL_INIT"}
+      - mkdir -p /app/discord-canary/modules/discord_krisp/KMS/logs
+      # HACK: Set the newUpdater key to false in build_info.json in order to disable the new Discord updater (released on 2026-05-04, version 1.0.136),
+      #       Also add a localModulesRoot key that points to the Discord modules we're packaging.
+      - |
+        set -e
+        jq '.newUpdater = false | .localModulesRoot = "/app/discord-canary/modules"' /app/discord-canary/resources/build_info.json > tmp.json
+        mv tmp.json /app/discord-canary/resources/build_info.json
+      # HACK: Patch Discord's app.asar to fix the desktop filename to avoid window association issues, as recommended by the Flatpak documentation:
+      #       https://docs.flatpak.org/en/latest/electron.html#using-correct-desktop-file-name
+      - patch-electron-desktop-filename /app/discord-canary/resources/app.asar
+      - desktop-file-edit --add-mime-type=x-scheme-handler/discord /app/share/applications/${FLATPAK_ID}.desktop
+      - desktop-file-edit --set-key=Exec --set-value='com.discordapp.DiscordCanary %U' /app/share/applications/${FLATPAK_ID}.desktop
+      - desktop-file-edit --set-key=Icon --set-value=com.discordapp.DiscordCanary /app/share/applications/${FLATPAK_ID}.desktop
+      - desktop-file-edit --remove-key=Path /app/share/applications/${FLATPAK_ID}.desktop
+    sources:
+      - type: file
+        dest-filename: discord_full.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/full.distro
+        sha256: f3762c7d59170a289bc3fa1d4860a6eb8f04c08647694443dbbe320079720fc0
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          timestamp-query: .pub_date
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/full.distro"'
+          is-main-source: true
+      - type: archive
+        dest-filename: discord_bootstrap.tar.gz
+        strip-components: 0
+        url: https://dl-canary.discordapp.net/apps/linux/1.0.1140/discord-canary-1.0.1140.tar.gz
+        sha256: ed2cf14dd289d0f79e0461a576f1fb05e38ad4aa86f51b9a4cf0588318617aea
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://dl-canary.discordapp.net/apps/linux/\($version)/discord-canary-\($version).tar.gz"'
+      - type: file
+        dest-filename: discord_desktop_core_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_desktop_core/1/full.distro
+        sha256: 4c464d755e10b19b997e1526b3131f0d557b9b828cd4b2aeeee2c146d0fedb3c
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_desktop_core/1/full.distro"'
+      # TODO: Figure out a way to properly check for updates for each Discord module listed below.
+      - type: file
+        dest-filename: discord_erlpack_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_erlpack/1/full.distro
+        sha256: 18705526dc3e8fad47fad844bdf41d5be7a267973bdffbfed322ec22b1f4fbf3
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_erlpack/1/full.distro"'
+      - type: file
+        dest-filename: discord_game_utils_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_game_utils/1/full.distro
+        sha256: 5be9e1bb89ad0e46bf21ff943f2b527f9d4533a88984373cc683159b27644f6a
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_game_utils/1/full.distro"'
+      - type: file
+        dest-filename: discord_krisp_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_krisp/1/full.distro
+        sha256: fcb098214b7f3652cc37293554d0b5191cdb7fcbd7a1b1ede202dce5c939c167
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_krisp/1/full.distro"'
+      - type: file
+        dest-filename: discord_rpc_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_rpc/1/full.distro
+        sha256: 1f92d76b31ce1937bd3b770a7087e8f7661cdd55494dab79db60f66e8a49edee
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_rpc/1/full.distro"'
+      - type: file
+        dest-filename: discord_spellcheck_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_spellcheck/1/full.distro
+        sha256: 54aa31421d39ee2e68efe94241b331f96ef48fcd8c54c3904966704fa366ca84
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_spellcheck/1/full.distro"'
+      - type: file
+        dest-filename: discord_utils_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_utils/1/full.distro
+        sha256: 9d09b8ca00303c03ec2feeaa4da3a70ed203b9823cc6f6cfe1ff8ae15466dce8
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_utils/1/full.distro"'
+      - type: file
+        dest-filename: discord_voice_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_voice/1/full.distro
+        sha256: cc1026c5c63c0da318bb274a33bc14fe2c5cc44deb377dc09d1a18c1d88afc3a
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_voice/1/full.distro"'
+      - type: file
+        dest-filename: discord_zstd_module.tar.br
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1140/discord_zstd/1/full.distro
+        sha256: f3ceeabd1e39118a91397f0e8d31670762d01e45a7725818b6c51e681c1d6f00
+        x-checker-data:
+          type: json
+          url: https://discord.com/api/updates/canary?platform=linux
+          version-query: .name
+          url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_zstd/1/full.distro"'
+      - type: file
+        path: discord-canary.sh
+      - type: file
+        path: com.discordapp.DiscordCanary.metainfo.xml
+      - type: file
+        path: com.discordapp.DiscordCanary.svg
+      - type: file
+        path: disable-breaking-updates.py

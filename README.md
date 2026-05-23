@@ -34,14 +34,6 @@ However, this sandboxing prevents the following features from working:
 ### Wayland
 
 Wayland support is enabled by default since Discord 0.0.820 (released in 2025-12-05).
-
-Please note that native window decorations are not enabled by default. To do so, add the following lines to your [persistent launch options](#persistent-launch-options):
-
-```
---enable-features=WaylandWindowDecorations
---ozone-platform-hint=auto
-```
-
 To disable Wayland support permanently, run:
 
 ```
@@ -86,6 +78,19 @@ To undo that, run:
 ```sh
 rm ~/.config/autostart/com.discordapp.DiscordCanary.desktop
 ```
+
+### Enabling text to speech support
+
+Chromium includes support for [Speech Dispatcher](https://github.com/brailcom/speechd), but it's currently opt-in. To enable it, run these two commands:
+
+```sh
+# Add the required permission
+flatpak override --user --filesystem=xdg-run/speech-dispatcher:ro com.discordapp.DiscordCanary
+# Add the required launch option
+echo '--enable-speech-dispatcher' >> ~/.var/app/com.discordapp.DiscordCanary/config/discord-flags.conf
+```
+
+Please note that you will also need a speech synthesizer installed (e.g. [Piper](https://github.com/OHF-Voice/piper1-gpl), [Festival](https://www.cstr.ed.ac.uk/projects/festival/), [eSpeak NG](https://github.com/espeak-ng/espeak-ng)), and at least version 0.12.0 of Speech Dispatcher for this setup to work seamlessly. The [Arch Wiki](https://wiki.archlinux.org/title/Speech_dispatcher) can also be helpful to set this up properly.
 
 ## Legal
 
