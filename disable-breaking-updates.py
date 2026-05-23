@@ -27,10 +27,10 @@ except (IOError, json.decoder.JSONDecodeError):
     settings_path.parent.mkdir(parents=True, exist_ok=True)
     settings = {}
 
-if settings.get("SKIP_HOST_UPDATE"):
+if settings.get("SKIP_HOST_UPDATE") and settings.get("SKIP_MODULE_UPDATE"):
     print("Disabling updates already done")
 else:
-    skip_host_update = {"SKIP_HOST_UPDATE":True}
+    skip_host_update = {"SKIP_HOST_UPDATE":True, "SKIP_MODULE_UPDATE":True}
     settings.update(skip_host_update)
 
     with settings_path_temp.open('w') as settings_file_temp:

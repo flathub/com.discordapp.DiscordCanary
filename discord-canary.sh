@@ -20,6 +20,7 @@ then
         rm -f "${OUR_SOCKET}"
     fi
 fi
+
 if [ "${invoke_socat}" = true ]
 then
     socat "${SOCAT_ARGS[@]}" "UNIX-LISTEN:${OUR_SOCKET},forever,fork" "UNIX-CONNECT:${DISCORD_SOCKET}" &
@@ -31,8 +32,16 @@ then
     mapfile -t FLAGS <<< "$(grep -Ev '^\s*$|^#' "${XDG_CONFIG_HOME}/discord-flags.conf")"
 fi
 
+WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
+
+if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
+then
+    # TODO: Investigate removing --disable-gpu-memory-buffer-video-frames once Discord updates to Electron 34+ (https://crbug.com/331796411)
+    FLAGS+=('--enable-features=WaylandWindowDecorations' '--ozone-platform-hint=auto' '--disable-gpu-memory-buffer-video-frames')
+fi
+
 disable-breaking-updates.py
-env TMPDIR="${XDG_CACHE_HOME}" /app/discord-canary/discord-canary --no-sandbox --enable-speech-dispatcher "${DISCORD_FLAGS[@]}" "${FLAGS[@]}" "$@"
+env TMPDIR="${XDG_CACHE_HOME}" zypak-wrapper /app/discord-canary/DiscordCanary "${FLAGS[@]}" "${DISCORD_FLAGS[@]}" "$@"
 
 if [ "${invoke_socat}" = true ]
 then
