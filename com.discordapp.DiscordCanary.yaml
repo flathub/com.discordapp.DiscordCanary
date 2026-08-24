@@ -23,7 +23,6 @@ finish-args:
   - --talk-name=com.canonical.AppMenu.Registrar
   - --talk-name=com.canonical.indicator.application
   - --talk-name=com.canonical.Unity
-  - --system-talk-name=org.freedesktop.UPower
   - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
   - --env=ELECTRON_TRASH=gio
 
@@ -117,6 +116,25 @@ modules:
         set -e
         jq '.newUpdater = false | .localModulesRoot = "/app/discord-canary/modules"' /app/discord-canary/resources/build_info.json > tmp.json
         mv tmp.json /app/discord-canary/resources/build_info.json
+      # HACK: MediaPipe (video backgrounds / selfie segmentation) opens discord_voice *.tflite
+      #       models with O_RDWR. /app is mounted read-only, so the open fails with EACCES and the
+      #       camera goes black (see https://github.com/flathub/com.discordapp.Discord/issues/650).
+      #       Flatpak cannot ship files into the per-user writable tree at build time (/var/data is
+      #       created empty at runtime), so stash the real models under /app and replace them in the
+      #       module dir with symlinks to /var/data/mediapipe_models; discord.sh copies the stash
+      #       there on launch. Globbing *.tflite picks up any models Discord adds later.
+      - |
+        set -eu
+        voice=/app/discord-canary/modules/discord_voice
+        store=/app/discord-canary/mediapipe_models
+        # /var/data is Flatpak's alias for $XDG_DATA_HOME; keep an absolute path in the symlink.
+        writable=/var/data/mediapipe_models
+        mkdir -p "${store}"
+        for model in "${voice}"/*.tflite; do
+          name=${model##*/}
+          mv -f "${model}" "${store}/${name}"
+          ln -sfn "${writable}/${name}" "${voice}/${name}"
+        done
       # HACK: Patch Discord's app.asar to fix the desktop filename to avoid window association issues, as recommended by the Flatpak documentation:
       #       https://docs.flatpak.org/en/latest/electron.html#using-correct-desktop-file-name
       - patch-electron-desktop-filename /app/discord-canary/resources/app.asar
