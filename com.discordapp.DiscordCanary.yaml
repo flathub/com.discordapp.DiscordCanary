@@ -147,8 +147,8 @@ modules:
     sources:
       - type: file
         dest-filename: discord_full.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/full.distro
-        sha256: 0ec74bf4dcf2f48fccf89e06585f412489ba21cf11e58a5c8e62f4a15da911e2
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/full.distro
+        sha256: c4bfa7b5bf3cf89d5c4eec63b274da593f0216b0d662bd2948c73ae18206b991
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -159,8 +159,8 @@ modules:
       - type: archive
         dest-filename: discord_bootstrap.tar.gz
         strip-components: 0
-        url: https://dl-canary.discordapp.net/apps/linux/1.0.1834/discord-canary-1.0.1834.tar.gz
-        sha256: 4015789fcaffa59093230ae9afe167ca454a90a8134d0513d84e4a17123d60a8
+        url: https://dl-canary.discordapp.net/apps/linux/1.0.1836/discord-canary-1.0.1836.tar.gz
+        sha256: e46f4bc55e6dc70a9e81cc2a656279074b4c0d4cbebdc8fc37664a7cbac3b081
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -168,8 +168,8 @@ modules:
           url-query: '"https://dl-canary.discordapp.net/apps/linux/\($version)/discord-canary-\($version).tar.gz"'
       - type: file
         dest-filename: discord_desktop_core_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_desktop_core/1/full.distro
-        sha256: a07d7a3f88a187304bf4d29ae0269c1cff92ce888113daefcc21f7f05e6f9fc2
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_desktop_core/1/full.distro
+        sha256: 818105fd922952698759f57f47f508e27b3a77dd8e1009839dbfb9ab16747ef0
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -178,8 +178,8 @@ modules:
       # TODO: Figure out a way to properly check for updates for each Discord module listed below.
       - type: file
         dest-filename: discord_erlpack_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_erlpack/1/full.distro
-        sha256: 48110232081dd5ca77f9890865ca5456145850e54559288e6556f36b9dccd8e1
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_erlpack/1/full.distro
+        sha256: f6d9c49b7b2e552a68edf0262acfd4d4620c0d84a6aeef2222ef600be558c1f7
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -187,8 +187,8 @@ modules:
           url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_erlpack/1/full.distro"'
       - type: file
         dest-filename: discord_game_utils_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_game_utils/1/full.distro
-        sha256: 086bd0fc5f3fa5c80e41107ddc7f247b119fd5066aaa6f25fc4f8b8fbd8b91e7
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_game_utils/1/full.distro
+        sha256: bc0c9e6471c025e867bbe01980e8c5f5800fd7407669ee0ade5461c385ade2bc
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -196,8 +196,8 @@ modules:
           url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_game_utils/1/full.distro"'
       - type: file
         dest-filename: discord_krisp_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_krisp/1/full.distro
-        sha256: 74277177c6f76b76172775da26e604bd9a0dcb2d9e5896aadb01b68921d61ce5
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_krisp/1/full.distro
+        sha256: eadb0329e23dd6df1b950dcbd8a703b098195694dc999a3c4a39dc58967ab44a
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -205,8 +205,8 @@ modules:
           url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_krisp/1/full.distro"'
       - type: file
         dest-filename: discord_rpc_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_rpc/1/full.distro
-        sha256: 040c516af8ec4b42302c4a70fb8687c881f4c689ba590237bf383a26c778baa4
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_rpc/1/full.distro
+        sha256: 6c09a9ec36fd442b092f0e0293d5973936a489de3cc722aa889bd4f10f84d3f9
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -214,8 +214,8 @@ modules:
           url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_rpc/1/full.distro"'
       - type: file
         dest-filename: discord_spellcheck_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_spellcheck/1/full.distro
-        sha256: 8dfe9a9030354658436ec9f0fccee743a3375ba0cc9bcef35d1d41a0c88e3067
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_spellcheck/1/full.distro
+        sha256: 9c6181931e87d61a45d592428f9c14bbe16a6d00cefd3cbd9963ae1d01ffec3b
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -223,8 +223,8 @@ modules:
           url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_spellcheck/1/full.distro"'
       - type: file
         dest-filename: discord_utils_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_utils/1/full.distro
-        sha256: b1e937b97f14af680eec66d1a7e03faf5114b2783d072a92b376e0cd3611e389
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_utils/1/full.distro
+        sha256: 7a04bb6c75ed9d1e9dceb1c60218a115bd4a48f6f6b6db7f6435ce0c79082a3c
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -232,8 +232,8 @@ modules:
           url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_utils/1/full.distro"'
       - type: file
         dest-filename: discord_voice_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_voice/1/full.distro
-        sha256: e06bb34eec2c1032eaf6f7cbe5a7fbe7820b577f30e0141f8511aa2eece65615
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_voice/1/full.distro
+        sha256: 2b9666bd3ea751db4f89f254f56d57a7624a04693c28d8e16986f99fc210f173
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
@@ -241,8 +241,8 @@ modules:
           url-query: '"https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/\($version)/discord_voice/1/full.distro"'
       - type: file
         dest-filename: discord_zstd_module.tar.br
-        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1834/discord_zstd/1/full.distro
-        sha256: 2ea5cd12ae15bd54869c4d58346919b530ae4eef98513c0f845c5ee5e0094965
+        url: https://canary.dl2.discordapp.net/distro/app/canary/linux/x64/1.0.1836/discord_zstd/1/full.distro
+        sha256: b6de62b5eefd4b4680241ef1970350a7ec34a510fb2bc9c8d44f3a6755ec55ba
         x-checker-data:
           type: json
           url: https://discord.com/api/updates/canary?platform=linux
