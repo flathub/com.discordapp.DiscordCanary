@@ -25,15 +25,12 @@ However, this sandboxing prevents the following features from working:
 
 - **Game Activity**: This flatpak version of Discord cannot scan running processes to detect running games.  
   There is currently no workaround or solution for this limitation.
-- **Unrestricted File Access**: Default sandbox permissions for this package does not allow host filesystem access. You can attach files using "send file" menu, but "drag-n-drop" feature will not work.  
-  This limitation will likely be overcomed eventually, when Electron give us a file picker portal which will allow full access to the filesystem while still restricting unauthorized access.  
-  To work around this now, you can change sandbox permissions of installed flatpak applications (for example, with [Flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal) or with `flatpak override --user --filesystem=home com.discordapp.DiscordCanary`) to give Discord broader file system access, allowing file attachments from more locations.
 - **Rich Presence**: See [this page](https://github.com/flathub/com.discordapp.Discord/wiki/Rich-Precense-(discord-rpc)) if you want to expose Discord's rich presence interface for other applications.
 
 
 ### Wayland
 
-Wayland support is enabled by default since Discord 0.0.820 (released in 2025-12-05).
+Wayland support is enabled by default since Discord 0.0.820 (released on 2025-12-05).
 To disable Wayland support permanently, run:
 
 ```
