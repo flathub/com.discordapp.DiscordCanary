@@ -91,8 +91,11 @@
   </supports>
   <update_contact>me_at_modder.pw</update_contact>
   <releases>
-    <release version="1.0.2500" date="2026-11-19">
+    <release version="1.0.2506" date="2026-11-20">
       <description></description>
+    </release>
+    <release version="1.0.2500" date="2026-11-19">
+      <description/>
     </release>
     <release version="1.0.2484" date="2026-11-17">
       <description/>
